@@ -96,8 +96,7 @@ def _build_function_page(page_info: parser.FunctionPageInfo) -> str:
   Returns:
     The function markdown page.
   """
-
-  parts = [f'# {page_info.full_name}\n\n']
+  parts = [f'# {page_info.full_name.split(".")[-1]}\n\n']
 
   parts.append('<!-- Insert buttons and diff -->\n')
 
@@ -119,7 +118,7 @@ def _build_function_page(page_info: parser.FunctionPageInfo) -> str:
     parts.append(
         _format_docstring(
             item,
-            table_title_template='<h2 class="add-link">{title}</h2>'))
+            table_title_template='{title}'))
 
   parts.append(_build_compatibility(page_info.doc.compatibility))
 
@@ -141,7 +140,7 @@ def _build_type_alias_page(page_info: parser.TypeAliasPageInfo) -> str:
     The type alias's markdown page.
   """
 
-  parts = [f'# {page_info.full_name}\n\n']
+  parts = [f'# {page_info.full_name.split(".")[-1]}\n\n']
 
   parts.append('<!-- Insert buttons and diff -->\n')
 
@@ -162,7 +161,7 @@ def _build_type_alias_page(page_info: parser.TypeAliasPageInfo) -> str:
     parts.append(
         _format_docstring(
             item,
-            table_title_template='<h2 class="add-link">{title}</h2>'))
+            table_title_template='{title}'))
 
   return ''.join(parts)
 
@@ -275,7 +274,7 @@ def merge_class_and_constructor_docstring(
       updated_doc.append(
           _format_docstring(
               item,
-              table_title_template='<h2 class="add-link">{title}</h2>'))
+              table_title_template='{title}'))
     return updated_doc
 
   class_doc = merge_blocks(class_page_info, ctor_info)
@@ -296,7 +295,7 @@ def _build_class_page(page_info: parser.ClassPageInfo) -> str:
   """
 
   # Add the full_name of the symbol to the page.
-  parts = ['# {page_info.full_name}\n\n'.format(page_info=page_info)]
+  parts = [f'# {page_info.full_name.split(".")[-1]}\n\n']
 
   # This is used as a marker to initiate the diffing process later down in the
   # pipeline.
@@ -352,7 +351,7 @@ def _build_class_page(page_info: parser.ClassPageInfo) -> str:
     parts.append(
         _format_docstring(
             page_info.attr_block,
-            table_title_template='<h2 class="add-link">{title}</h2>'))
+            table_title_template='{title}'))
     parts.append('\n\n')
 
   # If the class has child classes, add that information to the page.
@@ -380,7 +379,7 @@ def _build_class_page(page_info: parser.ClassPageInfo) -> str:
     parts.append(
         _other_members(
             page_info.other_members,
-            title='<h2 class="add-link">Class Variables</h2>',
+            title='Class Variables',
         ))
 
   return ''.join(parts)
@@ -489,7 +488,7 @@ def _build_module_page(page_info: parser.ModulePageInfo) -> str:
     The module markdown page.
   """
 
-  parts = [f'# Module: {page_info.full_name}\n\n']
+  parts = [f'# Module: {page_info.full_name.split(".")[-1]}\n\n']
 
   parts.append('<!-- Insert buttons and diff -->\n')
 
@@ -546,7 +545,7 @@ def _build_module_page(page_info: parser.ModulePageInfo) -> str:
     parts.append(
         _other_members(
             page_info.other_members,
-            title='<h2 class="add-link">Other Members</h2>',
+            title='Other Members',
         ))
 
   return ''.join(parts)
@@ -628,22 +627,18 @@ def _build_compatibility(compatibility):
 
 
 TABLE_HEADER = (
-    '<table class="tfo-notebook-buttons tfo-api nocontent" align="left">')
+    # '<table class="tfo-notebook-buttons tfo-api nocontent" align="left">'
+    '')
 
 _TABLE_TEMPLATE = textwrap.dedent("""
     {table_header}
     {table_content}
-    </table>
 
     {table_footer}""")
 
 _TABLE_LINK_TEMPLATE = textwrap.dedent("""\
-    <td>
-      <a target="_blank" href="{url}">
-        <img src="https://www.tensorflow.org/images/GitHub-Mark-32px.png" />
-        View source on GitHub
-      </a>
-    </td>""")
+  [![](https://www.tensorflow.org/images/GitHub-Mark-32px.png)View source on GitHub]({url})
+  """)
 
 
 def _top_source_link(location):

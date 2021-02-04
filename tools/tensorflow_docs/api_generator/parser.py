@@ -699,9 +699,8 @@ def _pairs(items):
 # Don't change the width="214px" without consulting with the devsite-team.
 TABLE_TEMPLATE = textwrap.dedent("""
   <!-- Tabular view -->
-   <table class="responsive fixed orange">
-  <colgroup><col width="214px"><col></colgroup>
-  <tr><th colspan="2">{title}</th></tr>
+  <table>
+  <tr><th>{title}</th></tr>
   {text}
   {items}
   </table>
@@ -718,8 +717,8 @@ ITEMS_TEMPLATE = textwrap.dedent("""\
   </tr>""")
 
 TEXT_TEMPLATE = textwrap.dedent("""\
-  <tr class="alt">
-  <td colspan="2">
+  <tr>
+  <td>
   {text}
   </td>
   </tr>""")
@@ -805,7 +804,7 @@ class TitleBlock(object):
       else:
         description = description.strip()
       item_table = ITEMS_TEMPLATE.format(
-          name=f'`{name}`', anchor='', description=description)
+          name=f'<code>{name}</code>', anchor='', description=description)
       item_table = self._INDENTATION_REMOVAL_RE.sub(r'\2', item_table)
       items.append(item_table)
 
@@ -840,12 +839,13 @@ class TitleBlock(object):
                                       # (a new-line followed by non-whitespace)
     """, re.VERBOSE | re.DOTALL)
 
+  # This
   ITEM_RE = re.compile(
       r"""
-      ^(\*?\*?'?"?     # Capture optional *s to allow *args, **kwargs and quotes
-          \w[\w.'"]*?  # Capture a word character followed by word characters
-                       # or "."s or ending quotes.
-      )\s*:\s          # Allow any whitespace around the colon.""",
+      ^(\*?\*?          # Capture optional *s to allow *args, **kwargs.
+          \w[\w.]*?     # Capture a word character followed by word characters
+                        # or "."s.
+      )\s*:\s           # Allow any whitespace around the colon.""",
       re.MULTILINE | re.VERBOSE)
 
   @classmethod
