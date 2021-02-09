@@ -593,23 +593,23 @@ def _build_signature(obj_info: parser.PageInfo,
   full_signature = str(obj_info.signature)
 
   parts = [
-      '<pre class="devsite-click-to-copy prettyprint lang-py '
-      'tfo-signature-link">'
+      '<pre>'
   ]
 
   if hasattr(obj_info, 'decorators'):
     parts.extend([
-        f'<code>@{dec}</code>' for dec in obj_info.decorators
+        f'<code>@{dec}</code>\n' for dec in obj_info.decorators
         if dec in DECORATOR_ALLOWLIST
     ])
 
   if type_alias:
-    parts.append(f'<code>{obj_name} = {full_signature}')
+    parts.append(f'<code>{obj_name} = {full_signature}\n')
   else:
+    obj_name = obj_name.split('.')[-1]
     parts.append(f'<code>{obj_name}{full_signature}')
   parts.append('</code></pre>\n\n')
 
-  return '\n'.join(parts)
+  return ''.join(parts)
 
 
 def _build_compatibility(compatibility):
