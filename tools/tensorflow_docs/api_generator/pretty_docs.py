@@ -488,7 +488,7 @@ def _build_module_page(page_info: parser.ModulePageInfo) -> str:
     The module markdown page.
   """
 
-  parts = [f'# Module: {page_info.full_name.split(".")[-1]}\n\n']
+  parts = [f'# {page_info.full_name.split(".")[-1]}\n\n']
 
   parts.append('<!-- Insert buttons and diff -->\n')
 
