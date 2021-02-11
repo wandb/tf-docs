@@ -469,7 +469,7 @@ def _build_module_parts(module_parts: List[parser.MemberInfo],
                         template: str) -> List[str]:
   mod_str_parts = []
   for item in module_parts:
-    changed_url = '/'.join(['.']+item.url.split('/')[2:])
+    changed_url = "./"+item.url.split('/')[-1].lower()
     item = item._replace(url = changed_url)
     mod_str_parts.append(template.format(**item._asdict()))
     if item.doc.brief:
