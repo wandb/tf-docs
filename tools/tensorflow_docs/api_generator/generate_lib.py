@@ -547,7 +547,7 @@ def write_docs(
 
     path = output_dir / parser.documentation_path(full_name)
 
-    content = _get_headers(page_info, search_hints)
+    content = []
     content.append(pretty_docs.build_md_page(page_info))
     text = '\n'.join(content)
     try:
