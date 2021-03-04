@@ -67,7 +67,7 @@ class TocNode(object):
     deprecated: Whether the module is deprecated or not.
   """
 
-  def __init__(self, module: str, py_object: Any, path: str):
+  def __init__(self, module, py_object, path):
     self._module = module
     self._py_object = py_object
     self._path = path
@@ -375,7 +375,7 @@ class GenerateToc(object):
 
     return collections.OrderedDict(submod_yaml_content)
 
-  def generate(self) -> Dict[str, Any]:
+  def generate(self):
     """Generates the final toc.
 
     Returns:
@@ -547,7 +547,7 @@ def write_docs(
 
     path = output_dir / parser.documentation_path(full_name)
 
-    content = _get_headers(page_info, search_hints)
+    content = []
     content.append(pretty_docs.build_md_page(page_info))
     text = '\n'.join(content)
     try:
